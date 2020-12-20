@@ -1,0 +1,26 @@
+{
+  "name": "mqtt-custom-subscriber",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fol21/mqtt-custom-subscriber.git"
+  },
+  "keywords": [
+    "mqtt"
+  ],
+  "author": "Fernando Lima <folivelima@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fol21/mqtt-custom-subscriber/issues"
+  },
+  "homepage": "https://github.com/fol21/mqtt-custom-subscriber#readme",
+  "dependencies": {
+    "mqtt": "^4.2.6"
+  }
+}
