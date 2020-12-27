@@ -1,6 +1,8 @@
 const mqtt = require('mqtt')
 const client  = mqtt.connect('mqtt://localhost:1883')
 
+const THRESHOLD = 3;
+
 client.on('connect', function () {
   client.subscribe('/allow-in:passagers', function (err) {
     if (!err) {
@@ -11,7 +13,8 @@ client.on('connect', function () {
 
 client.on('message', function (topic, message) {
   // message is Buffer
-  console.log("passagers", message.toString())   
-  console.log("Allow In",  parseInt(message.toString()) < 3 ? "allowed" : "not allowed");  
-  client.publish('/allow-in:allow',JSON.stringify({allow: parseInt(message.toString()) < 3 ? true : false}));
+  const context = JSON.parse(message.toString());
+  console.log("context", message.toString())   
+  console.log("Allow In",  context["passagers"] < 3 ? "allowed" : "not allowed");  
+  client.publish('/allow-in:allow',JSON.stringify({id: context["id"] , allow: parseInt(message.toString()) < THRESHOLD ? true : false}));
 })
