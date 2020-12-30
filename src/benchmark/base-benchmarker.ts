@@ -22,15 +22,17 @@ export class BenchMarker
      */
     public thresholdReached(info: {id: string, passagers: number, threshold: number}) 
     {
-        if(info.passagers > info.threshold)
-        {
-            if(this.client.exists(`limit:${info.id}`))
-                this.client.incr(`limit:${info.id}`);
-            else
-                this.client.set(`limit:${info.id}`, "1");
-            
-            this.client.get(`limit:${info.id}`, redis.print);
-        }
+        this.client.get(`last-read:${info.id}`, (err, res) => {
+            const last = res ? parseInt(res) : null;
+            if(last == null || (last < info.threshold && info.passagers >= info.threshold))
+            {
+                this.client.incr(`limit:${info.id}`, (err, res) => {
+                    this.client.set(`last-read:${info.id}`, info.passagers.toString())       
+                });
+            } else {
+                this.client.set(`last-read:${info.id}`, info.passagers.toString()) 
+            }
+        });
         return this;
     }
 }
